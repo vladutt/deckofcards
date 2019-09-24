@@ -16,3 +16,7 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('decks/{count}', 'DeckController@newDeck')->where('count', '[0-9]+')->name('deck.new_deck');
+Route::get('deck/{deck}/draw/{cards}', 'DeckController@drawCard')->where('cards', '[0-9]+')->name('deck.draw_card');
+Route::get('deck/{deck}/shuffle', 'DeckController@deckShuffle')->name('deck.shuffle');
