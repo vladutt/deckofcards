@@ -15,11 +15,12 @@ class CreateDecksTable extends Migration
     {
         Schema::create('decks', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('deck_id');
-            $table->enum('shuffled', ['true', 'false']);
+            $table->string('deck_id')->unique();
+            $table->enum('shuffled', ['true', 'false'])->default('true');
             $table->integer('times_shuffled')->default(0);
             $table->integer('remaining');
             $table->integer('decks');
+            $table->enum('brand_deck', ['true', 'false'])->default('false');
             $table->timestamps();
         });
     }

@@ -17,6 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('decks/{count}', 'DeckController@newDeck')->where('count', '[0-9]+')->name('deck.new_deck');
-Route::get('deck/{deck}/draw/{cards}', 'DeckController@drawCard')->where('cards', '[0-9]+')->name('deck.draw_card');
-Route::get('deck/{deck}/shuffle', 'DeckController@deckShuffle')->name('deck.shuffle');
+Route::get('decks/{decks}', 'DeckController@newDeck')->name('deck.new_deck');
+Route::get('decks/{deck}/draw/{cards}', 'DeckController@drawCard')->where('cards', '[0-9]+')->name('deck.draw_card');
+Route::get('decks/{deck}/shuffle', 'DeckController@deckShuffle')->name('deck.deck_shuffle');
+Route::get('decks/partial/{cards}', 'DeckController@partialDeck')->name('deck.partial_deck');
