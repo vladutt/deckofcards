@@ -3,17 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Deck;
-use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 class DeckController extends Controller
 {
 
-    private $cards = ['AS', '2S', '3S', '4S', '5S', '6S', '7S', '8S', '9S', '0S', 'JS', 'QS', 'KS',
+    private $cards = [
+        'AS', '2S', '3S', '4S', '5S', '6S', '7S', '8S', '9S', '0S', 'JS', 'QS', 'KS',
         'AD', '2D', '3D', '4D', '5D', '6D', '7D', '8D', '9D', '0D', 'JD', 'QD', 'KD',
         'AC', '2C', '3C', '4C', '5C', '6C', '7C', '8C', '9C', '0C', 'JC', 'QC', 'KC',
-        'AH', '2H', '3H', '4H', '5H', '6H', '7H', '8H', '9H', '0H', 'JH', 'QH', 'KH'];
+        'AH', '2H', '3H', '4H', '5H', '6H', '7H', '8H', '9H', '0H', 'JH', 'QH', 'KH'
+    ];
 
     public function newDeck($decks) {
 
@@ -26,7 +27,7 @@ class DeckController extends Controller
             'remaining' => $deck->remaining
         ];
 
-        return $this->response($data);
+        return response()->json($data, 201);
     }
 
     private function createDecks($decks) {
@@ -58,14 +59,14 @@ class DeckController extends Controller
         $deckFounded = ($deck === 'new') ? $this->createDecks(1) : Deck::where('deck_id', $deck)->first();
 
         if($deckFounded === null) {
-            return $this->response(['status' => 'error', 'message' => 'Nu am gasit acest pachet.']);
+            return response()->json(['status' => 'error', 'message' => 'Nu am gasit acest pachet.'], 404);
         }
 
         $cards = array_values(json_decode($deckFounded->cards->cards, true));
         $countCards = count($cards);
 
         if ($countCards === 0) {
-            return $this->response(['status' => 'error', 'message' => 'Nu mai sunt cărți...']);
+            return response()->json(['status' => 'error', 'message' => 'Nu mai sunt cărți...'], 404);
         }
 
         if($countCards < $numberCards) {
@@ -116,7 +117,7 @@ class DeckController extends Controller
         ];
 
 
-        return $this->response($data);
+        return response()->json($data, 200);
 
     }
 
@@ -125,7 +126,7 @@ class DeckController extends Controller
         $deckFounded = Deck::where('deck_id', $id)->first();
 
         if($deckFounded === null) {
-            return $this->response(['status' => 'error', 'message' => 'Nu am gasit acest pachet.']);
+            return response()->json(['status' => 'error', 'message' => 'Nu am gasit acest pachet.'], 404);
         }
         $decks = $deckFounded->decks;
         $deckFounded->remaining = 52 * $decks;
@@ -142,7 +143,7 @@ class DeckController extends Controller
             'remaining' => $deckFounded->remaining
         ];
 
-        return $this->response($data);
+        return response()->json($data);
 
     }
 
@@ -175,7 +176,7 @@ class DeckController extends Controller
             }
 
             if (isset($error)) {
-                return $this->response(['status' => 'error', 'message' => 'Ai introdus o valoare gresita...']);
+                return response()->json(['status' => 'error', 'message' => 'Ai introdus o valoare gresita...'], 400);
             }
 
             $countCards = count($cards);
@@ -199,15 +200,11 @@ class DeckController extends Controller
                 'remaining' => $deck->remaining
             ];
 
-            return $this->response($data);
+            return response()->json($data);
 
         } else {
-            return $this->response(['status' => 'error', 'message' => 'Ceva nu a mers bine...']);
+            return response()->json(['status' => 'error', 'message' => 'Ceva nu a mers bine...'], 400);
         }
 
-    }
-
-    private function response(array $data) {
-        return response()->json($data);
     }
 }

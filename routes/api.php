@@ -17,7 +17,16 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// Deck routes //
+
 Route::get('decks/{decks}', 'DeckController@newDeck')->name('deck.new_deck');
 Route::get('decks/{deck}/draw/{cards}', 'DeckController@drawCard')->where('cards', '[0-9]+')->name('deck.draw_card');
 Route::get('decks/{deck}/shuffle', 'DeckController@deckShuffle')->name('deck.deck_shuffle');
 Route::get('decks/partial/{cards}', 'DeckController@partialDeck')->name('deck.partial_deck');
+
+// --------------- //
+
+// Piles routes //
+
+Route::get('decks/{deck}/piles/{pile}/add/{cards}', 'PileController@createPile')->name('pile.create_pile');
+Route::get('decks/{deck}/piles/list', 'PileController@listPiles')->name('pile.list_pile');
