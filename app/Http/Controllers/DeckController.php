@@ -101,7 +101,7 @@ class DeckController extends Controller
         foreach ($selectedCards as $key => $card) {
 
             $formatCards[] = [
-                'image' => url('/storage/img/'.$card.'.png'),
+                'image' => asset('/images/cards/'.$card.'.png'),
                 'value' => (is_numeric($card[0]) && $card[0] !== "0") ? $card[0] : $values[$card[0]],
                 'suits' => $suits[$card[1]],
                 'code' => $card
