@@ -16,7 +16,21 @@ class DeckController extends Controller
         'AH', '2H', '3H', '4H', '5H', '6H', '7H', '8H', '9H', '0H', 'JH', 'QH', 'KH'
     ];
 
+    /**
+     * Display the new deck
+     *
+     * @param integer $decks -> decks number
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function newDeck($decks) {
+
+        if ($decks > 10) {
+            return response()->json(['status' => 'error', 'message' => 'Numarul maxim al pachetelor admise este 10.'], 201);
+        }
+
+        if (!is_numeric($decks) && $decks !== 'new') {
+            return response()->json(['status' => 'error', 'message' => 'Nu cunosc acest parametru'], 400);
+        }
 
         $deck = $this->createDecks($decks);
 
@@ -30,30 +44,14 @@ class DeckController extends Controller
         return response()->json($data, 201);
     }
 
-    private function createDecks($decks) {
-
-        $brand = 'false';
-        if (!is_int($decks) && $decks === 'new') {
-            $decks = 1;
-            $brand = 'true';
-        }
-
-        $deck = new Deck();
-        $deck->deck_id = Str::random(15);
-        $deck->shuffled = true;
-        $deck->remaining= 52 * $decks;
-        $deck->decks = $decks;
-        $deck->brand_deck = $brand;
-        $deck->save();
-
-        $deck->cards()->create([
-            'cards' => json_encode($this->generateCards($decks))
-        ]);
-
-        return $deck;
-    }
-
-    public function drawCard($deck, $numberCards) {
+    /**
+     * Draw cards form an existing deck
+     *
+     * @param string $deck -> deck_id
+     * @param integer $numberCards
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function drawCards($deck, $numberCards) {
 
 
         $deckFounded = ($deck === 'new') ? $this->createDecks(1) : Deck::where('deck_id', $deck)->first();
@@ -121,9 +119,15 @@ class DeckController extends Controller
 
     }
 
-    public function deckShuffle($id) {
+    /**
+     * Shuffle the deck
+     *
+     * @param string $deck -> deck_id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function deckShuffle($deck) {
 
-        $deckFounded = Deck::where('deck_id', $id)->first();
+        $deckFounded = Deck::where('deck_id', $deck)->first();
 
         if($deckFounded === null) {
             return response()->json(['status' => 'error', 'message' => 'Nu am gasit acest pachet.'], 404);
@@ -147,21 +151,12 @@ class DeckController extends Controller
 
     }
 
-    private function generateCards($number) {
-
-        $newCards = [];
-        $x = 0;
-
-        for ($x; $x < $number; $x++) {
-
-            $newCards = array_merge($newCards, $this->cards);
-
-        }
-
-        return $newCards;
-
-    }
-
+    /**
+     * Create a deck with the cards which was specified
+     *
+     * @param string $cards
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function partialDeck($cards) {
 
         if (strpos($cards, ',')) {
@@ -207,4 +202,57 @@ class DeckController extends Controller
         }
 
     }
+
+    /* Private functions */
+
+    /**
+     * Generate more cards for more decks
+     *
+     * @param integer $number
+     * @return array
+     */
+    private function generateCards($number) {
+
+        $newCards = [];
+        $x = 0;
+
+        for ($x; $x < $number; $x++) {
+
+            $newCards = array_merge($newCards, $this->cards);
+
+        }
+
+        return $newCards;
+
+    }
+
+    /**
+     * Create a deck
+     *
+     * @param integer $decks
+     * @return deck
+     */
+    private function createDecks($decks) {
+
+        $brand = 'false';
+        if (!is_int($decks) && $decks === 'new') {
+            $decks = 1;
+            $brand = 'true';
+        }
+
+        $deck = new Deck();
+        $deck->deck_id = Str::random(15);
+        $deck->shuffled = true;
+        $deck->remaining= 52 * $decks;
+        $deck->decks = $decks;
+        $deck->brand_deck = $brand;
+        $deck->save();
+
+        $deck->cards()->create([
+            'cards' => json_encode($this->generateCards($decks))
+        ]);
+
+        return $deck;
+    }
+
 }

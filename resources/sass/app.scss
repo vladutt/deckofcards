@@ -6,3 +6,16 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+pre {
+  background: rgba(255,0,0,0.58);
+  padding: 20px;
+  border-radius: 5px;
+}
+code {
+  display: block;
+  white-space: pre-wrap
+}
+hr {
+  background: white;
+}
