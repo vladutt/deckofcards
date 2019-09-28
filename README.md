@@ -1,3 +1,3 @@
 # Deck of cards - API
 
-Visit the website -> https://www.deckofcards.vladutteodor.ro
+Visit the website -> https://deckofcards.vladutteodor.ro
