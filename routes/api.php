@@ -13,11 +13,6 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-
 Route::get('decks/{deck_id}/draw/{cards}', 'DeckController@drawCards')->where('cards', '[0-9]+')->name('deck.draw_cards');
 Route::get('decks/{deck_id}/shuffle', 'DeckController@deckShuffle')->name('deck.deck_shuffle');
 Route::get('decks/partial/{cards}', 'DeckController@partialDeck')->name('deck.partial_deck');
