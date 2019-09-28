@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ mix('css/app.css') }}" rel="stylesheet" type="text/css" />
         <title>Deck of Cards - API</title>
     </head>
     <body style="background: black">
@@ -23,6 +23,6 @@
 
             </div>
         </div>
-        <script src="{{ asset('js/app.js') }}" type="text/js"></script>
+        <script src="{{ mix('js/app.js') }}" type="text/js"></script>
     </body>
 </html>
