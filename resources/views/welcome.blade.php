@@ -8,34 +8,19 @@
     </head>
     <body style="background: black">
 
-        <div class="content">
+        <div class="container">
             <div class="row text-white p-5">
                 <div class="col-md-12 text-center">
-                    <h2>Deck of Cards - API</h2>
+                    <h4>Deck of Cards - API</h4>
                 </div>
                 <div class="col-md-6 text-center offset-3">
 
-                    <p>
-                        Link: <a href="{{url('/api/decks/1')}}">New deck</a>
-                    </p>
-
-                    <p>
-                        Link: <a href="{{url('/api/decks/new')}}">Brand new deck</a>
-                    </p>
-
-                    <p>
-                        Link: <a href="{{url('/api/decks/new/draw/2')}}">New deck + draw cards</a>
-                    </p>
-
-                        <pre class="text-white">{{url('/api/decks/{decks}')}}</pre>
-
-                        <pre class="text-white">{{url('/api/decks/{deck}/draw/{cards}')}}</pre>
-
-                        <pre class="text-white">{{url('/api/decks/{deck}/shuffle')}}</pre>
-
-                        <pre class="text-white">{{url('/api/decks/partial/{cards}')}}</pre>
+                    Magic tricks!!!
 
                 </div>
+
+                @include('decks-request')
+
             </div>
         </div>
         <script src="{{ asset('js/app.js') }}" type="text/js"></script>
